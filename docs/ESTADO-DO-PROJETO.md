@@ -28,7 +28,7 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
   publicado, e publicar exigiria autenticação no webhook e na API.
 - Para mensagens vagas, ajustar o prompt (escala de confiança explícita) em vez de mudar o limite
   de 0,6 (22/11/2026).
-- ADR-0001 — Regra de classificação na API, não no n8n (`docs/decisions/`), status *Proposta*.
+- ADR-0001 — Regra de classificação na API, não no n8n (`docs/decisions/`), status *Aceita* (22/11/2026).
 
 ## Próximos passos
 

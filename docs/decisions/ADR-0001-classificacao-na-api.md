@@ -1,8 +1,7 @@
 # ADR-0001 — Regra de classificação na API, não no n8n
 
-**Status:** Proposta · **Data:** 22/11/2026
-**Decidido por:** — (registra o que o código do commit inicial já faz; vira "Aceita" quando o
-Marcelo confirmar)
+**Status:** Aceita · **Data:** 22/11/2026
+**Decidido por:** Marcelo (aceita em 22/11/2026, após a entrega da v1.0.0)
 
 ## Contexto
 
