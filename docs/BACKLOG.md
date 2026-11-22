@@ -6,8 +6,8 @@ Fila do que está em foco, na ordem. Ao fechar um item: resultado, commit, teste
 
 - [ ] **1. Conferir o enunciado do desafio** no PDF do curso e trazer para cá o que é exigido e
   como é avaliado — aceite: os `TODO(decisão)` de `PRODUCT.md` e do contrato respondidos.
-- [ ] **2. Testes verdes nesta máquina** — aceite: `pytest` passa num `.venv` limpo, com o
-  resultado anotado no estado do projeto.
+- [x] **2. Testes verdes nesta máquina** — aceite: `pytest` passa num `.venv` limpo, com o
+  resultado anotado no estado do projeto. **Feito em 22/11:** 10 passed (Python 3.14.4).
 - [ ] **3. Fixar um modelo estável do Gemini** no lugar de `gemini-flash-latest` — aceite:
   `check_gemini.py` classifica as quatro amostras, inclusive a de injeção, sem 503.
 - [ ] **4. Fluxo de ponta a ponta** — aceite: `docker compose up`, workflow importado, uma

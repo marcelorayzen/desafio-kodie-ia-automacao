@@ -14,8 +14,8 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 
 | área | estado | evidência e limite |
 |---|---|---|
-| API de classificação (`/classify`, `/health`) | Implementado | código no commit inicial `b6c8de7`; testes escritos em `tests/test_api.py` — **ainda não executados nesta máquina** |
-| Regras de revisão humana e reserva | Implementado | `classify_message` + testes de baixa confiança e saída inválida, idem |
+| API de classificação (`/classify`, `/health`) | Testado | `pytest`: **10 passed** em 22/11/2026 (Python 3.14.4, `.venv` limpo) — com IA falsa; não prova o Gemini |
+| Regras de revisão humana e reserva | Testado | baixa confiança e saída inválida cobertas pelos mesmos 10 testes |
 | Chamada real ao Gemini | Implementado | `scripts/check_gemini.py` existe; nenhuma execução registrada aqui |
 | Workflow do n8n | Implementado | `n8n/workflow.json` (10 nós, gerado por `scripts/build_workflow.py`); não importado/rodado |
 | Docker Compose | Implementado | API com healthcheck e n8n dependente dela; não subido |
@@ -35,4 +35,4 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 
 ## Próxima missão
 
-Itens 1 e 2 do backlog — **aceite:** enunciado conferido e `pytest` verde num `.venv` limpo.
+Item 1 do backlog — **aceite:** enunciado do desafio conferido no PDF do curso e os `TODO(decisão)` respondidos.
