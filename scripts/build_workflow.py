@@ -37,7 +37,19 @@ def sheets_node(name, tab, position):
                 "mappingMode": "defineBelow",
                 "value": COLUMNS,
                 "matchingColumns": [],
-                "schema": [],
+                # O n8n 2.x exige o schema no modo "defineBelow"; sem ele o nó falha ao executar.
+                "schema": [
+                    {
+                        "id": col,
+                        "displayName": col,
+                        "required": False,
+                        "defaultMatch": False,
+                        "display": True,
+                        "type": "string",
+                        "canBeUsedToMatch": True,
+                    }
+                    for col in COLUMNS
+                ],
             },
             "options": {},
         },
