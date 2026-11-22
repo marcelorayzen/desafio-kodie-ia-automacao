@@ -30,6 +30,7 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 
 ## Perguntas em aberto
 
+Nenhuma no momento.
 
 ## Próxima missão
 
