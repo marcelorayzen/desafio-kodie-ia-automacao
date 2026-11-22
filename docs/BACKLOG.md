@@ -17,7 +17,7 @@ Fila do que está em foco, na ordem. Ao fechar um item: resultado, commit, teste
 - [ ] **5. Conjunto de avaliação** (~20 mensagens fora dos exemplos do prompt) — aceite: acerto de
   categoria e setor medido e anotado.
 
-- [ ] **6. README nas 6 seções do enunciado** (ideia, problema, solução, tecnologias,
+- [x] **6. README nas 6 seções do enunciado** — **Feito em 22/11.** (ideia, problema, solução, tecnologias,
   funcionamento, como executar — incluindo Docker Compose) — aceite: cada seção presente e
   verdadeira em relação ao estado do projeto.
 - [ ] **7. Prints do fluxo** (completo, execução com sucesso, cada node, dados por etapa), com

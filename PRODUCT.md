@@ -41,7 +41,7 @@ nota ou rubrica numérica.
 | prompt estruturado (6) | `app/prompt.py` | Implementado |
 | resposta em JSON (6) | `app/schemas.py` | Testado |
 | fluxo funcional no n8n ou Make + integração com a API (6) | `n8n/workflow.json` | Implementado; não rodado |
-| README com 6 seções: ideia, problema, solução, tecnologias, funcionamento, como executar (8) | `README.md` | **Falta** — hoje só tem "Como rodar" e "Documentação" |
+| README com 6 seções: ideia, problema, solução, tecnologias, funcionamento, como executar (8) | `README.md` | Feito em 22/11 |
 | prints: fluxo completo, execução com sucesso, cada node configurado, dados por etapa, com descrição (7) | README ou PDF complementar | **Falta** — depende do fluxo rodando |
 | JSON exportado do n8n (9) | `n8n/workflow.json` | Implementado (gerado; conferir que importa) |
 | `.env.example` sem segredos (9) | `.env.example` | Feito |
