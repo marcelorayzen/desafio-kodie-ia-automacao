@@ -124,7 +124,7 @@ nodes = [
             "sendBody": True,
             "specifyBody": "json",
             "jsonBody": "={{ JSON.stringify({ message: $json.message, customer_name: $json.customer_name || null, channel: $json.channel }) }}",
-            "options": {"timeout": 60000},
+            "options": {"timeout": 150000},  # cobre 2 modelos x 2 tentativas x 30 s
         },
         "name": "Classificar mensagem (API + IA)",
         "type": "n8n-nodes-base.httpRequest",

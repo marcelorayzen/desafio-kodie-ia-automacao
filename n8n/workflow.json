@@ -60,7 +60,7 @@
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ message: $json.message, customer_name: $json.customer_name || null, channel: $json.channel }) }}",
         "options": {
-          "timeout": 60000
+          "timeout": 150000
         }
       },
       "name": "Classificar mensagem (API + IA)",

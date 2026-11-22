@@ -33,6 +33,7 @@ exemplos.
 2. A IA respondeu fora do schema → classificação de reserva (`outros`, `media`, `atendimento`,
    `neutro`, confiança 0) e motivo "Resposta da IA fora do formato esperado".
 3. A API falhou (Gemini fora, sem chave) → HTTP 502; o n8n grava na aba de revisão com o erro.
+   Antes do 502, a API já tentou de novo e usou o modelo de reserva (ver `docs/ARQUITETURA.md`).
 
 ## Regra de segurança
 

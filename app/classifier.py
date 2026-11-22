@@ -1,4 +1,5 @@
 import json
+import time
 from typing import Protocol
 
 import httpx
@@ -9,10 +10,20 @@ from .prompt import SYSTEM_PROMPT, build_user_prompt
 from .schemas import Classification, ClassifyRequest, ClassifyResponse
 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+# Sobrecarga, cota e falha do lado do Google: vale tentar de novo.
+RETRYABLE_STATUS = {429, 500, 502, 503, 504}
+# Modelo inexistente/desativado: não adianta repetir, mas o de reserva pode funcionar.
+NEXT_MODEL_STATUS = RETRYABLE_STATUS | {404}
+BACKOFF_SECONDS = 1.5
 
 
 class LLMError(Exception):
     """Falha ao falar com o provedor de IA (rede, autenticação, cota, resposta vazia)."""
+
+    def __init__(self, message: str, status: int | None = None, network: bool = False):
+        super().__init__(message)
+        self.status = status
+        self.network = network
 
 
 class LLMClient(Protocol):
@@ -40,7 +51,28 @@ class GeminiClient:
             body["generationConfig"]["thinkingConfig"] = {
                 "thinkingLevel": self._settings.gemini_thinking_level
             }
-        url = GEMINI_URL.format(model=self._settings.gemini_model)
+        models = [self._settings.gemini_model]
+        fallback = self._settings.gemini_fallback_model
+        if fallback and fallback not in models:
+            models.append(fallback)
+
+        last: LLMError | None = None
+        for model in models:
+            for attempt in range(max(1, self._settings.gemini_attempts_per_model)):
+                if attempt:
+                    time.sleep(BACKOFF_SECONDS * attempt)
+                try:
+                    return self._call(model, body)
+                except LLMError as exc:
+                    last = exc
+                    if not (exc.network or exc.status in RETRYABLE_STATUS):
+                        break
+            if not (last.network or last.status in NEXT_MODEL_STATUS):
+                break
+        raise last
+
+    def _call(self, model: str, body: dict) -> str:
+        url = GEMINI_URL.format(model=model)
         try:
             resp = httpx.post(
                 url,
@@ -49,11 +81,13 @@ class GeminiClient:
                 timeout=self._settings.gemini_timeout_seconds,
             )
         except httpx.HTTPError as exc:
-            raise LLMError(f"Erro de rede ao chamar o Gemini: {type(exc).__name__}") from exc
+            raise LLMError(
+                f"Erro de rede ao chamar o Gemini ({model}): {type(exc).__name__}", network=True
+            ) from exc
 
         if resp.status_code != 200:
             # Não repassa o corpo inteiro para não vazar detalhes internos nos logs/respostas.
-            raise LLMError(f"Gemini respondeu HTTP {resp.status_code}")
+            raise LLMError(f"Gemini ({model}) respondeu HTTP {resp.status_code}", status=resp.status_code)
 
         try:
             return resp.json()["candidates"][0]["content"]["parts"][0]["text"]

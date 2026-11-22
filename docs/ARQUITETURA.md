@@ -64,6 +64,12 @@ Rayzen em 22/08/2026 com 200, 503, 503). Medição de 22/11, mesma mensagem de c
 | `gemini-3.5-flash-lite` | padrão | 1,2 s | certo — reserva, se a cota apertar |
 | `gemini-2.5-flash` | — | — | HTTP 404 (desativado) |
 
+**Instabilidade (22/11, à tarde):** o `gemini-3.5-flash` alternou sucesso, 503 e timeout; o
+`flash-lite` também deu 503 pontual. Por isso o cliente tenta **2 vezes por modelo** em erro
+passageiro (429/5xx/timeout, espera de 1,5 s) e depois passa para `GEMINI_FALLBACK_MODEL`; 404
+pula direto para a reserva; 400/401/403 falham na hora. Pior caso ~2 min — o nó HTTP do n8n
+espera 150 s. Medido no container: 3/3 classificações certas, em 4 s, 68 s e 63 s.
+
 ## Deploy
 
 Não publicado: roda local com `docker compose up -d`. Publicar pede autenticação no webhook e na
