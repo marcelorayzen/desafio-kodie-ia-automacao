@@ -36,11 +36,12 @@ cliente ─POST /webhook/mensagem─▶ n8n
 - **Persistência:** só a planilha do Google Sheets (via n8n). A API não guarda nada.
 - **Integrações externas:** Gemini API (`generateContent`, `responseJsonSchema`) e Google Sheets
   (credencial selecionada no n8n; o JSON não a carrega).
-- **Autenticação/autorização:** nenhuma na API nem no webhook — aceitável só rodando local
-  (TODO(decisão): exigir token se for publicado).
+- **Autenticação/autorização:** nenhuma na API nem no webhook — aceitável só rodando local.
+  Publicar exige um token nos dois antes.
 - **Falhas:** Gemini fora, sem chave ou com HTTP ≠ 200 → `LLMError` → 502, e o n8n manda para a
   aba de revisão com o motivo. Resposta fora do schema → classificação de reserva com
-  `needs_human_review=true`. Sem retentativa automática.
+  `needs_human_review=true`. Erro passageiro do Gemini tem nova tentativa e modelo de reserva
+  (ver "Instabilidade", abaixo).
 - **Observabilidade:** logs do uvicorn e as execuções do n8n; sem métricas.
 
 ## Tecnologias
@@ -53,8 +54,8 @@ cliente ─POST /webhook/mensagem─▶ n8n
 | Docker Compose | subir os dois juntos | o n8n só sobe com a API saudável (`healthcheck`) | rodar cada um à mão |
 
 **Modelo:** `gemini-3.5-flash` (versão `3.5-flash-05-2026`) com `thinkingLevel: low`, fixado em
-22/11/2026. Antes era `gemini-flash-latest`, apelido que troca de versão sem aviso (medido no
-Rayzen em 22/08/2026 com 200, 503, 503). Medição de 22/11, mesma mensagem de cobrança dupla:
+22/11/2026. Antes era `gemini-flash-latest`, apelido que troca de versão sem aviso e que, nos
+testes, alternou sucesso e HTTP 503. Medição de 22/11, mesma mensagem de cobrança dupla:
 
 | modelo | raciocínio | tempo | resultado |
 |---|---|---|---|

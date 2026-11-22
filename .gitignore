@@ -6,6 +6,6 @@ __pycache__/
 CLAUDE.local.md
 .local/
 
-# Ferramentas locais (Rayzen): caminhos desta máquina
+# Configurações locais de ferramentas (caminhos desta máquina)
 .mcp.json
 .claude/

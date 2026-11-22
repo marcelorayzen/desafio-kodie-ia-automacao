@@ -16,7 +16,8 @@ Cliente ──▶ n8n (webhook) ──▶ API FastAPI ──▶ Gemini
 **Sumário:** [Ideia](#1-apresentação-da-ideia) · [Problema](#2-problema-escolhido) ·
 [Solução](#3-solução-proposta) · [Tecnologias](#4-tecnologias-utilizadas) ·
 [Funcionamento](#5-funcionamento-do-sistema) · [Como executar](#6-como-executar) ·
-[Testes](#testes-e-validação) · [Limitações](#limitações) · [Documentação](#documentação)
+[Testes](#testes-e-validação) · [Limitações](#limitações) · [Segurança](#segurança) ·
+[Documentação](#documentação) · [Autor](#autor)
 
 ---
 
@@ -215,7 +216,8 @@ curl -X POST http://localhost:5678/webhook/mensagem -H "Content-Type: applicatio
 ```
 
 A resposta é a linha gravada, e ela aparece na aba `financeiro`. Para testar só a API, sem o n8n,
-troque a URL por `http://localhost:8000/classify`.
+troque a URL por `http://localhost:8000/classify`; a documentação interativa fica em
+http://localhost:8000/docs.
 
 ## Testes e validação
 
@@ -276,6 +278,7 @@ uma registrada pelo caminho de erro enquanto o Gemini estava fora do ar. Os prin
 | [`docs/CONTRATO-classificacao.md`](docs/CONTRATO-classificacao.md) | valores permitidos e quando vai para revisão |
 | [`docs/QUALIDADE.md`](docs/QUALIDADE.md) | como se valida e a avaliação do prompt |
 | [`docs/decisions/`](docs/decisions/) | decisões de arquitetura (ADR) |
+| [`CHANGELOG.md`](CHANGELOG.md) | o que entrou em cada versão |
 
 ### Estrutura do repositório
 
@@ -289,3 +292,8 @@ Dockerfile            imagem da API
 docker-compose.yml    API + n8n
 .env.example          variáveis necessárias, sem valores secretos
 ```
+
+## Autor
+
+Desenvolvido por **Marcelo** ([@marcelorayzen](https://github.com/marcelorayzen)) como entrega do
+desafio técnico **IA e Automação** do curso Kodie — versão 1.0.0, novembro de 2026.

@@ -27,9 +27,3 @@ pytest && git diff --check           # verificação mínima
 python scripts/check_gemini.py       # Gemini real (gasta cota; usa o .env)
 python scripts/build_workflow.py     # regenera n8n/workflow.json
 ```
-
-## Rayzen
-
-O projeto está registrado no Rayzen (`desafio-kodie-ia-automacao`); MCP e hooks vêm de `.mcp.json`
-e `.claude/settings.json` (locais, fora do git: apontam para caminhos desta máquina). Decisão tomada pela pessoa →
-`rayzen_add_event(type: 'decision')`.

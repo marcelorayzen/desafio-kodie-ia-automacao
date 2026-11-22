@@ -9,8 +9,9 @@
 | nível | o que cobre | ferramenta |
 |---|---|---|
 | unitário/API | `/health`, classificação válida, revisão por baixa confiança, saída inválida da IA → reserva, falha do provedor → 502, validação da entrada | pytest + cliente de IA falso (`tests/test_api.py`) |
+| cliente do Gemini | nova tentativa em 503, modelo de reserva, 404 vai direto à reserva, 403 não repete | pytest com HTTP simulado (`tests/test_gemini_client.py`) |
 | IA real | as quatro amostras, inclusive a de injeção | `python scripts/check_gemini.py` (manual, gasta cota) |
-| ponta a ponta | webhook → API → aba certa da planilha, e erro → aba de revisão | n8n rodando + `curl` no webhook (manual) |
+| ponta a ponta | webhook → API → aba certa da planilha, e erro → aba de revisão | n8n rodando + `curl` no webhook (manual; prints em `docs/FLUXO-N8N.md`) |
 
 ## Critérios de aceite por entrega
 
@@ -20,9 +21,9 @@
 
 ## Avaliação de IA
 
-Ainda não há conjunto fixo de mensagens com resposta esperada. TODO(decisão): montar ~20 mensagens
-que **não** estão nos exemplos do prompt, com categoria e setor esperados, e medir o acerto — sem
-isso, "classifica bem" é impressão.
+Ainda não há conjunto fixo de mensagens com resposta esperada. Próximo passo (backlog, item 5):
+montar ~20 mensagens que **não** estão nos exemplos do prompt, com categoria e setor esperados, e
+medir o acerto — sem isso, "classifica bem" é impressão. A avaliação manual abaixo é o começo.
 
 ## O que os testes NÃO provam
 
