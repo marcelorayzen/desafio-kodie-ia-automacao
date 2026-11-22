@@ -59,5 +59,5 @@ nota ou rubrica numérica.
 ## Restrições e desconhecidos
 
 - RESTRIÇÃO: desafio de curso, feito por uma pessoa; Gemini no plano gratuito (cota diária).
-- DESCONHECIDO: o modelo `gemini-flash-latest` é um apelido que muda de versão — impacto: a
-  classificação pode mudar sem mudança no código.
+- RISCO: o modelo fixado (`gemini-3.5-flash`) pode ser desativado pelo Google, como o
+  `gemini-2.5-flash` foi — sinal: HTTP 404 no `check_gemini.py`.

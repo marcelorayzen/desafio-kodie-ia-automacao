@@ -52,9 +52,17 @@ cliente ─POST /webhook/mensagem─▶ n8n
 | n8n | orquestração e planilha | é o tema do curso; fluxo visível | script Python agendado |
 | Docker Compose | subir os dois juntos | o n8n só sobe com a API saudável (`healthcheck`) | rodar cada um à mão |
 
-**Risco do modelo:** `GEMINI_MODEL=gemini-flash-latest` é um apelido que troca de versão sem aviso.
-No Rayzen ele foi medido em 22/08/2026 com **200, 503, 503** em três chamadas seguidas e ficou de
-fora por instável. Para a entrega, fixar um modelo estável e conferir com `check_gemini.py`.
+**Modelo:** `gemini-3.5-flash` (versão `3.5-flash-05-2026`) com `thinkingLevel: low`, fixado em
+22/11/2026. Antes era `gemini-flash-latest`, apelido que troca de versão sem aviso (medido no
+Rayzen em 22/08/2026 com 200, 503, 503). Medição de 22/11, mesma mensagem de cobrança dupla:
+
+| modelo | raciocínio | tempo | resultado |
+|---|---|---|---|
+| `gemini-3.7-flash` | padrão | ~65 s/msg | 4 amostras certas — lento demais para o n8n |
+| `gemini-3.7-flash` | `low` | 85 s | certo; `minimal` não é aceito (HTTP 400) |
+| `gemini-3.5-flash` | `low` | 1,7 s | certo — **escolhido** |
+| `gemini-3.5-flash-lite` | padrão | 1,2 s | certo — reserva, se a cota apertar |
+| `gemini-2.5-flash` | — | — | HTTP 404 (desativado) |
 
 ## Deploy
 

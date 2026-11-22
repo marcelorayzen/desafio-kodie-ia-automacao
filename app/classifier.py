@@ -36,6 +36,10 @@ class GeminiClient:
                 "responseJsonSchema": Classification.model_json_schema(),
             },
         }
+        if self._settings.gemini_thinking_level:
+            body["generationConfig"]["thinkingConfig"] = {
+                "thinkingLevel": self._settings.gemini_thinking_level
+            }
         url = GEMINI_URL.format(model=self._settings.gemini_model)
         try:
             resp = httpx.post(

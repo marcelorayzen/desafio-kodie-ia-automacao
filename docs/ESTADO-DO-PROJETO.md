@@ -16,7 +16,7 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 |---|---|---|
 | API de classificação (`/classify`, `/health`) | Testado | `pytest`: **10 passed** em 22/11/2026 (Python 3.14.4, `.venv` limpo) — com IA falsa; não prova o Gemini |
 | Regras de revisão humana e reserva | Testado | baixa confiança e saída inválida cobertas pelos mesmos 10 testes |
-| Chamada real ao Gemini | Implementado | `scripts/check_gemini.py` existe; nenhuma execução registrada aqui |
+| Chamada real ao Gemini | Testado | `check_gemini.py` em 22/11/2026 com `gemini-3.5-flash` + `thinkingLevel: low`: 4/4 amostras corretas (injeção → `outros`/`baixa`), sem 503, ~2 s cada |
 | Workflow do n8n | Implementado | `n8n/workflow.json` (10 nós, gerado por `scripts/build_workflow.py`); não importado/rodado |
 | Docker Compose | Implementado | API com healthcheck e n8n dependente dela; não subido |
 | Documentação do padrão Rayzen | Implementado | AGENTS, PRODUCT, ARQUITETURA, CONTRATO, QUALIDADE, BACKLOG, ADR-0001 |
@@ -30,9 +30,8 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 
 ## Perguntas em aberto
 
-- TODO(decisão): qual modelo do Gemini fixar no lugar de `gemini-flash-latest`.
 
 ## Próxima missão
 
-Item 3 do backlog — fixar o modelo do Gemini e rodar `check_gemini.py` (gasta cota) — e em
-seguida o item 4, fluxo de ponta a ponta, que destrava os prints (item 7).
+Item 4 do backlog — fluxo de ponta a ponta (`docker compose up`, workflow importado, planilha),
+que destrava os prints (item 7).
