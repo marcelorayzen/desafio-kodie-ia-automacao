@@ -10,11 +10,10 @@ Fila do que está em foco, na ordem. Ao fechar um item: resultado, commit, teste
   resultado anotado no estado do projeto. **Feito em 22/11:** 10 passed (Python 3.14.4).
 - [x] **3. Fixar um modelo estável do Gemini** — **Feito em 22/11:** `gemini-3.5-flash` com
   `thinkingLevel: low`; `check_gemini.py` 4/4, sem 503. Medição em `docs/ARQUITETURA.md`.
-- [ ] **4. Fluxo de ponta a ponta** — aceite: `docker compose up`, workflow importado, uma
-  mensagem por setor e uma ambígua enviadas ao webhook chegam às abas certas da planilha.
-  **22/11:** 4/4 setores certos; a ambígua saiu com confiança 0,75 e não foi para revisão —
-  falta decidir o ajuste (prompt ou limite). Corrigido no caminho: `columns.schema` vazio nos nós
-  da planilha (o n8n 2.x exige).
+- [x] **4. Fluxo de ponta a ponta** — **Feito em 22/11:** 4/4 setores na aba certa e a ambígua em
+  `revisao_humana`, conferido na planilha. No caminho: `columns.schema` preenchido (exigido pelo
+  n8n 2.x) e escala de confiança explícita no prompt (decisão do Marcelo: ajustar o prompt, não o
+  limite — a ambígua tinha saído com 0,75).
 - [ ] **5. Conjunto de avaliação** (~20 mensagens fora dos exemplos do prompt) — aceite: acerto de
   categoria e setor medido e anotado.
 

@@ -17,7 +17,7 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 | API de classificação (`/classify`, `/health`) | Testado | `pytest`: **15 passed** em 22/11/2026 (Python 3.14.4) — com IA falsa; inclui tentativas e modelo de reserva |
 | Regras de revisão humana e reserva | Testado | baixa confiança e saída inválida cobertas pelos mesmos 10 testes |
 | Chamada real ao Gemini | Testado | `check_gemini.py` em 22/11/2026 com `gemini-3.5-flash` + `thinkingLevel: low`: 4/4 amostras corretas (injeção → `outros`/`baixa`), sem 503, ~2 s cada |
-| Workflow do n8n | Testado (parcial) | 22/11/2026, n8n 2.48.7: 5 mensagens pelo webhook, todas HTTP 200; as 4 de setor claro na aba certa da planilha. **A ambígua** ("oi então aquilo lá de novo né") **foi para `atendimento` com confiança 0,75**, não para revisão humana |
+| Workflow do n8n | Testado | 22/11/2026, n8n 2.48.7: webhook → API → Gemini → planilha; 4 mensagens de setor claro na aba certa e a ambígua em `revisao_humana` (confiança 0,3), conferido na planilha. Prints ainda não feitos |
 | Docker Compose | Testado | subido em 22/11/2026: API saudável, `/classify` real 3/3 no container; n8n 2.48.7 em `:5678` |
 | Documentação do padrão Rayzen | Implementado | AGENTS, PRODUCT, ARQUITETURA, CONTRATO, QUALIDADE, BACKLOG, ADR-0001 |
 | Entrega exigida pelo enunciado | Parcial | faltam README nas 6 seções, prints do fluxo e repositório público (`PRODUCT.md`, "O que o enunciado exige") |
@@ -34,5 +34,6 @@ Nenhuma no momento.
 
 ## Próxima missão
 
-Item 4 do backlog — fluxo de ponta a ponta (`docker compose up`, workflow importado, planilha),
-que destrava os prints (item 7).
+Item 7 (prints do fluxo, exigidos pelo enunciado) e item 6 (README nas 6 seções). Antes dos
+prints, limpar as linhas de teste da planilha. Item 5 (conjunto de avaliação) já tem um começo:
+9 mensagens na tabela de `docs/QUALIDADE.md`.
