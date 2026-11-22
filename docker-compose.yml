@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "5678:5678"
+    environment:
+      - TZ=America/Sao_Paulo
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+      - WEBHOOK_URL=http://localhost:5678/
+      # Permite usar {{ $env.GOOGLE_SHEET_ID }} dentro dos nodes (uso local/didático).
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - GOOGLE_SHEET_ID=${GOOGLE_SHEET_ID}
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+
+volumes:
+  n8n_data:

@@ -1,0 +1,612 @@
+{
+  "id": "kodieClassifier01",
+  "name": "Classificador de mensagens (Kodie)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mensagem",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "5b0d6f0e-6b1e-4c53-9d5e-0c1b6f2a7e11"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "message",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "customer_name",
+              "value": "={{ $json.body.customer_name ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "channel",
+              "value": "={{ $json.body.channel ?? 'webhook' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Normalizar entrada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/classify",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: $json.message, customer_name: $json.customer_name || null, channel: $json.channel }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "name": "Classificar mensagem (API + IA)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        300
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1",
+              "name": "category",
+              "value": "outros",
+              "type": "string"
+            },
+            {
+              "id": "e2",
+              "name": "priority",
+              "value": "media",
+              "type": "string"
+            },
+            {
+              "id": "e3",
+              "name": "department",
+              "value": "atendimento",
+              "type": "string"
+            },
+            {
+              "id": "e4",
+              "name": "sentiment",
+              "value": "neutro",
+              "type": "string"
+            },
+            {
+              "id": "e5",
+              "name": "summary",
+              "value": "Falha ao classificar a mensagem.",
+              "type": "string"
+            },
+            {
+              "id": "e6",
+              "name": "confidence",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "e7",
+              "name": "needs_human_review",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "e8",
+              "name": "review_reason",
+              "value": "={{ 'Erro na API de classificação: ' + ($json.error?.message ?? 'desconhecido') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Preparar erro",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        700,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c-review",
+                    "leftValue": "={{ $json.needs_human_review }}",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Revisão humana"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c-atendimento",
+                    "leftValue": "={{ $json.department }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "atendimento"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "atendimento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c-financeiro",
+                    "leftValue": "={{ $json.department }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "financeiro"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "financeiro"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c-suporte_tecnico",
+                    "leftValue": "={{ $json.department }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "suporte_tecnico"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "suporte_tecnico"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c-comercial",
+                    "leftValue": "={{ $json.department }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "comercial"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "comercial"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Rotear por setor",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        700,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "revisao_humana",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data_hora": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "cliente": "={{ $('Normalizar entrada').item.json.customer_name }}",
+            "canal": "={{ $('Normalizar entrada').item.json.channel }}",
+            "mensagem": "={{ $('Normalizar entrada').item.json.message }}",
+            "categoria": "={{ $json.category }}",
+            "prioridade": "={{ $json.priority }}",
+            "setor": "={{ $json.department }}",
+            "sentimento": "={{ $json.sentiment }}",
+            "resumo": "={{ $json.summary }}",
+            "confianca": "={{ $json.confidence }}",
+            "revisao_humana": "={{ $json.needs_human_review }}",
+            "motivo_revisao": "={{ $json.review_reason }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "Planilha: Revisão humana",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1000,
+        0
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "atendimento",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data_hora": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "cliente": "={{ $('Normalizar entrada').item.json.customer_name }}",
+            "canal": "={{ $('Normalizar entrada').item.json.channel }}",
+            "mensagem": "={{ $('Normalizar entrada').item.json.message }}",
+            "categoria": "={{ $json.category }}",
+            "prioridade": "={{ $json.priority }}",
+            "setor": "={{ $json.department }}",
+            "sentimento": "={{ $json.sentiment }}",
+            "resumo": "={{ $json.summary }}",
+            "confianca": "={{ $json.confidence }}",
+            "revisao_humana": "={{ $json.needs_human_review }}",
+            "motivo_revisao": "={{ $json.review_reason }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "Planilha: atendimento",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1000,
+        180
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "financeiro",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data_hora": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "cliente": "={{ $('Normalizar entrada').item.json.customer_name }}",
+            "canal": "={{ $('Normalizar entrada').item.json.channel }}",
+            "mensagem": "={{ $('Normalizar entrada').item.json.message }}",
+            "categoria": "={{ $json.category }}",
+            "prioridade": "={{ $json.priority }}",
+            "setor": "={{ $json.department }}",
+            "sentimento": "={{ $json.sentiment }}",
+            "resumo": "={{ $json.summary }}",
+            "confianca": "={{ $json.confidence }}",
+            "revisao_humana": "={{ $json.needs_human_review }}",
+            "motivo_revisao": "={{ $json.review_reason }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "Planilha: financeiro",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1000,
+        360
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "suporte_tecnico",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data_hora": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "cliente": "={{ $('Normalizar entrada').item.json.customer_name }}",
+            "canal": "={{ $('Normalizar entrada').item.json.channel }}",
+            "mensagem": "={{ $('Normalizar entrada').item.json.message }}",
+            "categoria": "={{ $json.category }}",
+            "prioridade": "={{ $json.priority }}",
+            "setor": "={{ $json.department }}",
+            "sentimento": "={{ $json.sentiment }}",
+            "resumo": "={{ $json.summary }}",
+            "confianca": "={{ $json.confidence }}",
+            "revisao_humana": "={{ $json.needs_human_review }}",
+            "motivo_revisao": "={{ $json.review_reason }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "Planilha: suporte_tecnico",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1000,
+        540
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "comercial",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data_hora": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "cliente": "={{ $('Normalizar entrada').item.json.customer_name }}",
+            "canal": "={{ $('Normalizar entrada').item.json.channel }}",
+            "mensagem": "={{ $('Normalizar entrada').item.json.message }}",
+            "categoria": "={{ $json.category }}",
+            "prioridade": "={{ $json.priority }}",
+            "setor": "={{ $json.department }}",
+            "sentimento": "={{ $json.sentiment }}",
+            "resumo": "={{ $json.summary }}",
+            "confianca": "={{ $json.confidence }}",
+            "revisao_humana": "={{ $json.needs_human_review }}",
+            "motivo_revisao": "={{ $json.review_reason }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "name": "Planilha: comercial",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1000,
+        720
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalizar entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar entrada": {
+      "main": [
+        [
+          {
+            "node": "Classificar mensagem (API + IA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificar mensagem (API + IA)": {
+      "main": [
+        [
+          {
+            "node": "Rotear por setor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preparar erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar erro": {
+      "main": [
+        [
+          {
+            "node": "Planilha: Revisão humana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotear por setor": {
+      "main": [
+        [
+          {
+            "node": "Planilha: Revisão humana",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Planilha: atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Planilha: financeiro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Planilha: suporte_tecnico",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Planilha: comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
