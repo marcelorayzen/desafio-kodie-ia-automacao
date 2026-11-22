@@ -25,6 +25,7 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 
 ## Decisões ativas
 
+- Entrega como GitHub Release `v1.0.0`, sem deploy (22/11/2026) — registrado no Rayzen.
 - ADR-0001 — Regra de classificação na API, não no n8n (`docs/decisions/`) — **Proposta**,
   registra o que o código já faz; aguarda o "sim" do Marcelo.
 

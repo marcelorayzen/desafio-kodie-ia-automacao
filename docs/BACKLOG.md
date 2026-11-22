@@ -23,8 +23,10 @@ Fila do que está em foco, na ordem. Ao fechar um item: resultado, commit, teste
 - [ ] **7. Prints do fluxo** (completo, execução com sucesso, cada node, dados por etapa), com
   descrição curta, em `docs/prints/` e referenciados no README — aceite: as quatro exigências da
   seção 7 do PDF cobertas. Depende do item 4.
-- [ ] **8. Entrega** — repositório público e link enviado ao curso — aceite: aprovação explícita
-  do Marcelo para tornar público, varredura sem segredo no histórico, link enviado.
+- [ ] **8. Entrega** — release `v1.0.0` **sem deploy** (decidido em 22/11), repositório público
+  e link enviado ao curso — aceite: prints no repositório, `CHANGELOG.md` conferido, aprovação
+  explícita do Marcelo para push, tag, release e tornar público; varredura sem segredo no
+  histórico (feita em 22/11: nada encontrado).
 
 ## Depois
 
