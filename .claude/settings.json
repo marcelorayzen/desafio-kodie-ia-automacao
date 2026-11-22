@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:\\Users\\marce\\Projects\\rayzen-ai\\apps\\agent\\src\\hooks\\rayzen-context-hook.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:\\Users\\marce\\Projects\\rayzen-ai\\apps\\agent\\src\\hooks\\rayzen-hook.mjs\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:\\Users\\marce\\Projects\\rayzen-ai\\apps\\agent\\src\\hooks\\rayzen-hook.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
