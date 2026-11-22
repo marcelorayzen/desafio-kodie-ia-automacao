@@ -39,5 +39,10 @@ exemplos.
 O texto da mensagem é dado, não instrução: vai delimitado entre `<<<` e `>>>`, e o prompt manda
 ignorar pedidos de dentro dela para mudar regras ou formato.
 
-TODO(decisão): os valores e critérios vieram do enunciado do curso ou foram escolhidos? Conferir
-no PDF antes de mudar qualquer um.
+## Origem dos valores
+
+O enunciado (caso 4.1) só pede classificar "em categorias, como dúvidas, reclamações ou
+solicitações" — `duvida`, `reclamacao` e `solicitacao` vêm dele; `outros` é reserva do projeto.
+Prioridade, setor, sentimento, resumo e confiança **foram escolhidos no projeto** para atender ao
+"encaminhamento para o setor responsável" do cenário (seção 2). Mudá-los não fere o enunciado, mas
+segue a regra 4 do `AGENTS.md`.

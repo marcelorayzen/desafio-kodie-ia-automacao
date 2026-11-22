@@ -20,6 +20,7 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 | Workflow do n8n | Implementado | `n8n/workflow.json` (10 nós, gerado por `scripts/build_workflow.py`); não importado/rodado |
 | Docker Compose | Implementado | API com healthcheck e n8n dependente dela; não subido |
 | Documentação do padrão Rayzen | Implementado | AGENTS, PRODUCT, ARQUITETURA, CONTRATO, QUALIDADE, BACKLOG, ADR-0001 |
+| Entrega exigida pelo enunciado | Parcial | faltam README nas 6 seções, prints do fluxo e repositório público (`PRODUCT.md`, "O que o enunciado exige") |
 | Rayzen | Implantado | projeto `desafio-kodie-ia-automacao` registrado; hook resolve o repoSlug pela pasta |
 
 ## Decisões ativas
@@ -29,10 +30,9 @@ executado com resultado conhecido. **Implantado** exige versão confirmada no am
 
 ## Perguntas em aberto
 
-- TODO(decisão): enunciado e critério de avaliação do desafio (estão no PDF do curso).
-- TODO(decisão): os valores de categoria, prioridade e setor vieram do enunciado ou foram escolhidos?
 - TODO(decisão): qual modelo do Gemini fixar no lugar de `gemini-flash-latest`.
 
 ## Próxima missão
 
-Item 1 do backlog — **aceite:** enunciado do desafio conferido no PDF do curso e os `TODO(decisão)` respondidos.
+Item 3 do backlog — fixar o modelo do Gemini e rodar `check_gemini.py` (gasta cota) — e em
+seguida o item 4, fluxo de ponta a ponta, que destrava os prints (item 7).

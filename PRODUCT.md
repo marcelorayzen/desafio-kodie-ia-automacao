@@ -8,7 +8,8 @@ pedido — e alguém precisa ler uma por uma para saber o que é urgente e para 
 que a IA não resolveu com confiança passa por uma pessoa.
 **Quem sofre:** quem faz o atendimento · **Frequência/impacto:** `HIPÓTESE` — volume e custo da
 triagem não medidos; é um cenário de desafio de curso.
-**Evidência:** TODO(decisão): o enunciado do desafio do curso Kodie (está no PDF do curso).
+**Evidência:** enunciado do desafio Kodie, caso **4.1 — Classificação de Mensagens** (PDF em
+`.local/Desafio_Tecnico_IA_e_Automacao_KODIE.pdf`, fora do git; conferido em 22/11/2026).
 
 ## Para quem
 
@@ -25,7 +26,27 @@ confiança); revisão humana abaixo do limite de confiança ou quando a IA respo
 webhook do n8n → API → planilha por setor; rodar localmente com Docker Compose.
 **Fora (de propósito):** canal real de mensagens (WhatsApp, e-mail), resposta automática ao
 cliente, painel próprio, publicação na internet e dado real de cliente — nenhum é pedido pelo
-desafio até onde se sabe (TODO(decisão): confirmar no enunciado).
+enunciado ("não é necessário desenvolver uma interface visual completa").
+
+## O que o enunciado exige
+
+O desafio "não possui uma única resposta correta"; avalia pensamento crítico, prompts, integração
+com API de IA, organização e validação de dados e fluxos de automação (seção 11 do PDF). Não há
+nota ou rubrica numérica.
+
+| exigência (seção do PDF) | onde está | situação em 22/11 |
+|---|---|---|
+| API em FastAPI ou Express (5, 6) | `app/` (FastAPI) | Testado com IA falsa |
+| integração com modelo de IA (6) | `app/` + Gemini | Implementado; chamada real não registrada |
+| prompt estruturado (6) | `app/prompt.py` | Implementado |
+| resposta em JSON (6) | `app/schemas.py` | Testado |
+| fluxo funcional no n8n ou Make + integração com a API (6) | `n8n/workflow.json` | Implementado; não rodado |
+| README com 6 seções: ideia, problema, solução, tecnologias, funcionamento, como executar (8) | `README.md` | **Falta** — hoje só tem "Como rodar" e "Documentação" |
+| prints: fluxo completo, execução com sucesso, cada node configurado, dados por etapa, com descrição (7) | README ou PDF complementar | **Falta** — depende do fluxo rodando |
+| JSON exportado do n8n (9) | `n8n/workflow.json` | Implementado (gerado; conferir que importa) |
+| `.env.example` sem segredos (9) | `.env.example` | Feito |
+| repositório público no GitHub e link enviado (6, 9) | `origin` | **Falta** — publicar exige aprovação do Marcelo |
+| opcional/diferencial: Dockerfile, `docker-compose.yml` com API e n8n, instruções no README (10) | raiz | Implementado; não subido |
 
 ## Sucesso
 
@@ -38,7 +59,5 @@ desafio até onde se sabe (TODO(decisão): confirmar no enunciado).
 ## Restrições e desconhecidos
 
 - RESTRIÇÃO: desafio de curso, feito por uma pessoa; Gemini no plano gratuito (cota diária).
-- DESCONHECIDO: o enunciado exato e o critério de avaliação do curso — impacto: decide o que
-  falta entregar. Fonte: o PDF do curso.
 - DESCONHECIDO: o modelo `gemini-flash-latest` é um apelido que muda de versão — impacto: a
   classificação pode mudar sem mudança no código.
